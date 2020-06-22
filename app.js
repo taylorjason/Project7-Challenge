@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const { reset } = require('nodemon');
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = 3000;
 
@@ -21,9 +22,27 @@ students.push({
 });
 
 app.use(bodyparser.json());
+app.use(cookieParser());
+
+app.get('/login', (req, res) => {
+  let opts = { httpOnly: true };
+  res.cookie('name', req.body.name);
+  res.end();
+});
+
+app.get('/hello', (req, res) => {
+  if (req.cookies.name) {
+    res.send(`Welcome ${req.cookies.name}!`);
+  } else {
+    res.send('you must login!');
+  }
+});
 
 app.get('/students', (req, res) => {
+  let opts = { httpOnly: true };
+  res.cookie('testing_key', 'testing_value');
   res.send(JSON.stringify(students));
+  res.end();
 });
 
 app.get('/students/:id', (req, res) => {

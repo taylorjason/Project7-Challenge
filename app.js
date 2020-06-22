@@ -6,6 +6,13 @@ const port = 3000;
 
 let students = [];
 students.push({
+  id: 2,
+  username: 'jDizzle',
+  email: 'jDizzle@InTheHouse.co',
+  name: ['Jason', 'Taylor'],
+  grades: ['D', 'F']
+});
+students.push({
   id: 1,
   username: 'jDizzle',
   email: 'jDizzle@InTheHouse.co',
@@ -30,11 +37,14 @@ app.get('/grades/:studentId', (req, res) => {
   );
 });
 
-app.post('/grades', (req, res) => {
+app.post('/grades/', (req, res) => {
   // students.find((stud) => stud.id)
   let id = req.body.id;
   let grade = req.body.grade;
   if (id && grade) {
+    students[
+      students.indexOf(students.find((stud) => stud.id === 1))
+    ].grades.push(grade);
     res.send('grade submitted');
   } else {
     res.send('data should be json with id and grade property');
